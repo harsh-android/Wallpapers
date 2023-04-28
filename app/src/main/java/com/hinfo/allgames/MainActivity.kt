@@ -32,7 +32,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 binding.rcvWallpapers.layoutManager = GridLayoutManager(this@MainActivity,3)
-                binding.rcvWallpapers.adapter = ImagesAdapter(list)
+                var adapter= ImagesAdapter{ data->
+
+
+                }
+                adapter.setArray(list)
+                binding.rcvWallpapers.adapter = adapter
 
             }
 
