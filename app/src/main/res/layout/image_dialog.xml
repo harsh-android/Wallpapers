@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="@dimen/_230sdp"
+        android:layout_height="@dimen/_400sdp">
+        <ImageView
+            android:id="@+id/imgPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -1,14 +1,20 @@
 package com.hinfo.allgames
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.hinfo.allgames.databinding.ActivityMainBinding
+import com.hinfo.allgames.databinding.ImageDialogBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         dbRef = FirebaseDatabase.getInstance().reference
 
         dbRef.root.child("Images").addValueEventListener(object :ValueEventListener{
+            @SuppressLint("ResourceAsColor")
             override fun onDataChange(snapshot: DataSnapshot) {
                 var list = ArrayList<ImageModel>()
                 for (data in snapshot.children) {
@@ -34,6 +41,14 @@ class MainActivity : AppCompatActivity() {
                 binding.rcvWallpapers.layoutManager = GridLayoutManager(this@MainActivity,3)
                 var adapter= ImagesAdapter{ data->
 
+                    var dialog = Dialog(this@MainActivity)
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
+                    var bin = ImageDialogBinding.inflate(LayoutInflater.from(this@MainActivity),null,false)
+                    dialog.setContentView(bin.root)
+
+                    Glide.with(this@MainActivity).load(data.image).into(bin.imgPhoto)
+
+                    dialog.show()
 
                 }
                 adapter.setArray(list)
