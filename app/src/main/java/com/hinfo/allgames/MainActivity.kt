@@ -20,9 +20,11 @@ import com.hinfo.allgames.databinding.ImageDialogBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-
+    lateinit var imgAdapter:ImagesAdapter
     lateinit var dbRef: DatabaseReference
     var cateList = ArrayList<CategoryModel>()
+    var imgList = ArrayList<ImageModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,7 +43,14 @@ class MainActivity : AppCompatActivity() {
 
                 binding.rcvCategory.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL,false)
                 var adapter = CategoryAdapter { data ->
+                    var newImgList = ArrayList<ImageModel>()
+                    for (im in imgList) {
+                        if (im.category.equals(data.name)) {
+                            newImgList.add(im)
+                        }
+                    }
 
+                    imgAdapter.updateArray(newImgList)
 
                 }
                 adapter.setArray(cateList)
@@ -59,14 +68,14 @@ class MainActivity : AppCompatActivity() {
         dbRef.root.child("Images").addValueEventListener(object : ValueEventListener {
             @SuppressLint("ResourceAsColor")
             override fun onDataChange(snapshot: DataSnapshot) {
-                var list = ArrayList<ImageModel>()
+                imgList.clear()
                 for (data in snapshot.children) {
                     var model = data.getValue(ImageModel::class.java)
-                    list.add(model!!)
+                    imgList.add(model!!)
                 }
 
                 binding.rcvWallpapers.layoutManager = GridLayoutManager(this@MainActivity, 3)
-                var adapter = ImagesAdapter { data ->
+                imgAdapter = ImagesAdapter { data ->
 
                     var dialog = Dialog(this@MainActivity)
                     dialog.window?.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
@@ -82,8 +91,8 @@ class MainActivity : AppCompatActivity() {
                     dialog.show()
 
                 }
-                adapter.setArray(list)
-                binding.rcvWallpapers.adapter = adapter
+                imgAdapter.setArray(imgList)
+                binding.rcvWallpapers.adapter = imgAdapter
 
             }
 

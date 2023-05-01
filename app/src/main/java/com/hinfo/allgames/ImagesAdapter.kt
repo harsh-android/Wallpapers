@@ -38,6 +38,12 @@ class ImagesAdapter(click: (ImageModel) -> Unit) : Adapter<ImagesAdapter.ImagesH
 
     fun setArray(list: ArrayList<ImageModel>) {
         this.list = list
+
+    }
+
+    fun updateArray(list: ArrayList<ImageModel>) {
+        this.list = list
+        notifyDataSetChanged()
     }
 
 }
