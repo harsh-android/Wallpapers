@@ -1,16 +1,13 @@
 package com.hinfo.allgames
 
-import android.R
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,10 +36,16 @@ class MainActivity : AppCompatActivity() {
                 cateList.clear()
                 for (data in snapshot.children) {
                     var model = data.getValue(CategoryModel::class.java)
-                    binding.tabCategory.addTab(binding.tabCategory.newTab().setText(model?.name))
                     cateList.add(model!!)
                 }
 
+                binding.rcvCategory.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL,false)
+                var adapter = CategoryAdapter { data ->
+
+
+                }
+                adapter.setArray(cateList)
+                binding.rcvCategory.adapter = adapter
 
             }
 
